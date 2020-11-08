@@ -40,20 +40,30 @@ public class EulerMethod extends NumericalMethod {
         return series;
     }
 
-    public XYChart.Series<Number, Number> globalError(double x0, double y0, double X, double h) {
-        double x = x0;
-        double y = y0;
-        double error = Math.abs(solution(x) - y);
-
-
+    public XYChart.Series<Number, Number> globalError(double x0, double y0, double X, double n0, double N) {
         XYChart.Series<Number, Number> series = new XYChart.Series<>();
-        while (x <= X) {
-            series.getData().add(new XYChart.Data<>(x, error));
 
-            y = next_y(x, y, h);
-            x = next_x(x, h);
-            error = Math.abs(solution(x) - y);
+        for(double ns = n0; ns<=N; ns++)
+        {
+            double h = (X - x0) / ns;
+            double x = x0;
+            double y = y0;
+            double error = Math.abs(solution(x) - y);
+
+            while (x <= X) {
+                //
+                y = next_y(x, y, h);
+                x = next_x(x, h);
+
+                double tmp = Math.abs(solution(x) - y);
+                if(tmp > error)
+                {
+                    error = tmp;
+                }
+            }
+            series.getData().add(new XYChart.Data<>(ns, error));
         }
+
         series.setName("Euler's global error");
         return series;
     }

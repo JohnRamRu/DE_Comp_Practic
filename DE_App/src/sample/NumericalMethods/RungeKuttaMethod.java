@@ -57,15 +57,45 @@ public class RungeKuttaMethod extends NumericalMethod{
         return series;
     }
 
-    public XYChart.Series<Number, Number> globalError(double x0, double y0, double X, double h) {
+    public XYChart.Series<Number, Number> globalError(double x0, double y0, double X, double n0, double N) {
+        XYChart.Series<Number, Number> series = new XYChart.Series<>();
+
+        for(double ns = n0; ns<=N; ns++)
+        {
+            double h = (X - x0) / ns;
+            double x = x0;
+            double y = y0;
+            double error = Math.abs(solution(x) - y);
+
+            while (x <= X) {
+                //
+                y = next_y(x, y, h);
+                x = next_x(x, h);
+
+                double tmp = Math.abs(solution(x) - y);
+                if(tmp > error)
+                {
+                    error = tmp;
+                }
+            }
+            series.getData().add(new XYChart.Data<>(ns, error));
+        }
+
+        series.setName("Runge–Kutta's global error");
+        return series;
+    }
+
+    /*public XYChart.Series<Number, Number> globalError(double x0, double y0, double X, double h, double n0, double N) {
         double x = x0;
         double y = y0;
+        double ns = n0;
         double error = Math.abs(solution(x) - y);
 
 
         XYChart.Series<Number, Number> series = new XYChart.Series<>();
-        while (x <= X) {
-            series.getData().add(new XYChart.Data<>(x, error));
+        while (ns <= N) {
+            series.getData().add(new XYChart.Data<>(ns, error));
+            ns+=1;
 
             y = next_y(x, y, h);
             x = next_x(x, h);
@@ -73,5 +103,5 @@ public class RungeKuttaMethod extends NumericalMethod{
         }
         series.setName("Runge–Kutta's global error");
         return series;
-    }
+    }*/
 }

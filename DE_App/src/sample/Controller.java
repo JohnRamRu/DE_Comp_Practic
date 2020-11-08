@@ -14,11 +14,13 @@ import sample.NumericalMethods.*;
 
 public class Controller {
     @FXML LineChart<Number, Number> graph;
-    @FXML LineChart<Number, Number> errorGraph;
+    @FXML LineChart<Number, Number> L_errorGraph;
+    @FXML LineChart<Number, Number> G_errorGraph;
 
     @FXML TextField init_y;
     @FXML TextField init_x;
     @FXML TextField init_X;
+    @FXML TextField init_n0;
     @FXML TextField init_N;
 
     @FXML CheckBox eulerBox;
@@ -41,7 +43,7 @@ public class Controller {
     private RungeKuttaMethod rungeKuttaMethod = new RungeKuttaMethod();
     private ExactSolution exactSolution = new ExactSolution();
 
-    private double x0, y0, X, h;
+    private double x0, y0, X, h, n0, N;
 
     public static double f(double x, double y){
         return (2 - Math.pow(y, 2))/(2 * y * Math.pow(x, 2));
@@ -90,8 +92,8 @@ public class Controller {
         X = Double.parseDouble(init_X.getText());
 
 
-        int N;
         N = Integer.parseInt(init_N.getText());
+        n0 = Integer.parseInt(init_n0.getText());
         h = (X - x0) / N;
 
         return true;
@@ -107,7 +109,8 @@ public class Controller {
 
     public void plot(ActionEvent event) {
         graph.getData().clear();
-        errorGraph.getData().clear();
+        L_errorGraph.getData().clear();
+        G_errorGraph.getData().clear();
 
         boolean error = !parseInput();
         methodError.setVisible(false);
@@ -134,11 +137,11 @@ public class Controller {
             if (eulerSeries != null) {
                 graph.getData().add(eulerSeries);
                 if (localError) {
-                    errorGraph.getData().add(eulerMethod.localError(x0, X, h));
+                    L_errorGraph.getData().add(eulerMethod.localError(x0, X, h));
                 }
 
                 if (globalError) {
-                    errorGraph.getData().add(eulerMethod.globalError(x0, y0, X, h));
+                    G_errorGraph.getData().add(eulerMethod.globalError(x0, y0, X, n0, N));
                 }
             } else {
                 valError.setText("Function y(x) is undefined at this initial values");
@@ -154,11 +157,11 @@ public class Controller {
                 graph.getData().add(impEulerSeries);
 
                 if (localError) {
-                    errorGraph.getData().add(improvedEulerMethod.localError(x0, X, h));
+                    L_errorGraph.getData().add(improvedEulerMethod.localError(x0, X, h));
                 }
 
                 if (globalError) {
-                    errorGraph.getData().add(improvedEulerMethod.globalError(x0, y0, X, h));
+                    G_errorGraph.getData().add(improvedEulerMethod.globalError(x0, y0, X, n0, N));
                 }
             } else {
                 valError.setText("Function y(x) is undefined at this initial values");
@@ -173,11 +176,11 @@ public class Controller {
                 graph.getData().add(RKSeries);
 
                 if (localError) {
-                    errorGraph.getData().add(rungeKuttaMethod.localError(x0, X, h));
+                    L_errorGraph.getData().add(rungeKuttaMethod.localError(x0, X, h));
                 }
 
                 if (globalError) {
-                    errorGraph.getData().add(rungeKuttaMethod.globalError(x0, y0, X, h));
+                    G_errorGraph.getData().add(rungeKuttaMethod.globalError(x0, y0, X, n0, N));
                 }
             } else {
                 valError.setText("Function y(x) is undefined at this initial values");

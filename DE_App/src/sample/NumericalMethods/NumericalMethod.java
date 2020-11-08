@@ -28,7 +28,7 @@ public class NumericalMethod implements NumericalMethodInterface
         return  null;
     }
 
-    public XYChart.Series<Number, Number> globalError(double x0, double y0, double X, double h) {
+    public XYChart.Series<Number, Number> globalError(double x0, double y0, double X, double n0, double N) {
         return  null;
     }
 }
