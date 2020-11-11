@@ -61,6 +61,14 @@ public class ImprovedEulerMethod extends NumericalMethod {
                     error = tmp;
                 }
             }
+            if (Math.abs(x - X) <= 0.000001)
+            {
+                y = next_y(X, y, h);
+                x = X;
+                double tem = Math.abs(solution(x) - y);
+                if(tem>error)error = tem;
+            }
+
             series.getData().add(new XYChart.Data<>(ns, error));
         }
 

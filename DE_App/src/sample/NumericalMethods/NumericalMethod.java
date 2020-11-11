@@ -9,11 +9,12 @@ public class NumericalMethod implements NumericalMethodInterface
     }
 
     static double f(double x, double y){
-        return (2 * Math.pow(x, 3) + 2 * y/x);
+        return ((3 * y + 2 * x * y) / Math.pow(x, 2));//(2 * Math.pow(x, 3) + 2 * y/x);
     }
 
     static double solution(double x) {
-        return (Math.pow(x, 2) + Math.pow(x, 4));
+        //System.out.println(Math.exp(3)*Math.exp(-3.0f / x)*Math.pow(x,2));
+        return Math.exp(3)*Math.exp(-3.0f / x)*Math.pow(x,2);//(Math.pow(x, 2) + Math.pow(x, 4));
     }
 
     double next_x(double x, double h) {

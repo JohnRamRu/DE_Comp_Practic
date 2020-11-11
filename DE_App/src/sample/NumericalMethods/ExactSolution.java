@@ -7,7 +7,7 @@ public class ExactSolution extends NumericalMethod {
         double x = x0;
         double y = solution(x);
 
-        System.out.println(y);
+        //System.out.println(y);
 
         XYChart.Series<Number, Number> series = new XYChart.Series<>();
         while (x <= X) {
@@ -16,7 +16,7 @@ public class ExactSolution extends NumericalMethod {
             x = next_x(x, h);
             y = solution(x);
 
-            System.out.println(y);
+            //System.out.println(y);
 
             if (invalidDouble(y)) {
                 return null;
